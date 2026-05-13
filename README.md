@@ -1,2 +1,2 @@
 # GTW
-![Flowchart](gtw_workflow.png)
+![Flowchart](images/gtw_workflow.png)

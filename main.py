@@ -1,9 +1,5 @@
-from random import random, choice, choices
+from random import choice
 from time import sleep
-
-
-guessed_letters = []
-unguessed_letters = []
 
 words = [
     "PYTHON", "PROGRAMMING", "DEVELOPER", "ALGORITHM", 
@@ -39,13 +35,18 @@ def display_game_status(secret_word, guessed_letters, unguessed_letters, number_
 
 def input_validation(letter, unguessed_word, guessed_letters):
     """Validating the input if it one letter and not a letter that guessed already befor"""
-    if not len(letter) == 1:
+    if not letter.isalpha():
+        print('The input must contain letters only.')
+        return False
+    
+    if len(letter) != 1:
         print('The input must contain only one character.')
         return False
     
     if letter in unguessed_word or letter in guessed_letters:
         print('The letter has been tried before.')
         return False
+    
     
     return True
 
@@ -60,7 +61,7 @@ def get_user_input(unguessed_word, guessed_word):
     return user_input
 
 
-def game_logic(letter, word):
+def game_logic(letter, word, unguessed_letters, guessed_letters):
     """check if the letter are correct"""
     if letter not in word:
         unguessed_letters.append(letter)
@@ -89,7 +90,7 @@ def print_menu():
 
     while True:
         choice = input('Select an option (1-3):\n>>> ')
-        if choice in '123':
+        if choice in ('1', '2', '3'):
             sleep(0.5)
             break
 
@@ -102,9 +103,6 @@ def print_menu():
 
 def main():
     """The main function of the game"""
-
-    number_of_attempts_val = 0
-    attempts = 15
     
     sleep(0.5)
     print("\n" + "╔" + "═"*43 + "╗")
@@ -125,13 +123,16 @@ def main():
             break
 
         elif user_choice == '1':
+            number_of_attempts_val = 0
+            attempts = 15
+            guessed_letters = []
+            unguessed_letters = []
             word = random_word(words)
-            user_input = ''
             while True:
                 remaining = display_game_status(word, guessed_letters, unguessed_letters, attempts, number_of_attempts_val)
                 user_input = get_user_input(unguessed_letters, guessed_letters)
 
-                if game_logic(user_input, word):
+                if game_logic(user_input, word, unguessed_letters, guessed_letters):
                     sleep(0.5)
                     print('\nNice one! You found a letter.\n')
                     sleep(1.5)
@@ -145,11 +146,11 @@ def main():
                     sleep(0.5)
                     print('\n\n\nCongratulations! You are the winner!\n\n\n')
                     sleep(1)
-                    remaining
+                    display_game_status(word, guessed_letters, unguessed_letters, attempts, number_of_attempts_val)
                     sleep(2)
                     break
 
-                if remaining < 1:
+                if number_of_attempts_val >= attempts:
                     sleep(0.5)
                     print('\n\nGame Over! You ran out of guesses.\n\n')
                     sleep(0.5)

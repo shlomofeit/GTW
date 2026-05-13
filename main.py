@@ -1,8 +1,10 @@
 from random import random, choice, choices
+from time import sleep
 
 
 guessed_letters = []
 unguessed_letters = []
+number_of_attempts = 15
 
 def random_word(words: list):
     """Choose a random word for the game"""
@@ -24,7 +26,8 @@ def display_game_status(secret_word, guessed_letters, unguessed_letters, number_
     print(f'\n{12 * ' '}>>  {word_for_display}  <<\n')
     print('=' * 45)
     print(f'Wrong letters that you tried: {' '.join(unguessed_letters)}')
-    print('=' * 45)
+    print('=' * 45, '\n\n\n')
+    sleep(0.5)
 
 
 def input_validation(letter, unguessed_word, guessed_letters):
@@ -37,6 +40,15 @@ def input_validation(letter, unguessed_word, guessed_letters):
         print('The letter has been tried before.')
         return False
     
+    return True
+
+
+def get_user_input(unguessed_word, guessed_word):
+    """Manage the dialog with the user"""
+    while not input_validation:
+        user_input = input('Enter your guess:\n>>> ').upper()
+        input_validation(user_input, unguessed_word, guessed_word)
+
     return True
 
 

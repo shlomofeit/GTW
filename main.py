@@ -48,3 +48,11 @@ def game_logic(letter, word):
     
     guessed_letters.append(letter)
     return True
+
+
+def win_check(guessed_letters, word):
+    """Check if the game is done"""
+    if all(letter in guessed_letters for letter in word):
+        return True
+    
+    return False

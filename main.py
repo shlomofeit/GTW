@@ -4,14 +4,20 @@ from time import sleep
 
 guessed_letters = []
 unguessed_letters = []
-number_of_attempts = 15
+
+words = [
+    "PYTHON", "PROGRAMMING", "DEVELOPER", "ALGORITHM", 
+    "BOOLEAN", "VARIABLE", "FUNCTION", "DATABASE", 
+    "NETWORK", "SECURITY", "ASSEMBLY", "CYBER", 
+    "COFFEE", "ISRAEL", "SUCCESS", "CHALLENGE"
+]
 
 def random_word(words: list):
     """Choose a random word for the game"""
     if not words:
         return f'No words in the json file.'
     
-    return list(random.choice(words).upper())
+    return list(choice(words).upper())
 
 
 def display_game_status(secret_word, guessed_letters, unguessed_letters, number_of_attempts, attempts):
@@ -28,6 +34,7 @@ def display_game_status(secret_word, guessed_letters, unguessed_letters, number_
     print(f'Wrong letters that you tried: {' '.join(unguessed_letters)}')
     print('=' * 45, '\n\n\n')
     sleep(0.5)
+    return remaining
 
 
 def input_validation(letter, unguessed_word, guessed_letters):
@@ -45,11 +52,12 @@ def input_validation(letter, unguessed_word, guessed_letters):
 
 def get_user_input(unguessed_word, guessed_word):
     """Manage the dialog with the user"""
-    while not input_validation:
+    input_validation_val = ''
+    while not input_validation_val:
         user_input = input('Enter your guess:\n>>> ').upper()
-        input_validation(user_input, unguessed_word, guessed_word)
+        input_validation_val = input_validation(user_input, unguessed_word, guessed_word)
 
-    return True
+    return user_input
 
 
 def game_logic(letter, word):
@@ -93,4 +101,60 @@ def print_menu():
     return choice
 
 def main():
-    pass
+    """The main function of the game"""
+
+    number_of_attempts_val = 0
+    attempts = 15
+    
+    sleep(0.5)
+    print("\n" + "╔" + "═"*43 + "╗")
+    print("║" + " "*43 + "║")
+    print("║" + "   WELCOME TO THE ULTIMATE GUESSING GAME   " + "║")
+    print("║" + " "*43 + "║")
+    print("╚" + "═"*43 + "╝")
+    sleep(0.5)
+    print(f"{'Prepare your brain...':^45}")
+
+    while True:
+        user_choice = print_menu()
+        if user_choice == '2':
+            print('Coming soon...')
+
+        elif user_choice == '3':
+            print('Bye<>Bye')
+            break
+
+        elif user_choice == '1':
+            word = random_word(words)
+            user_input = ''
+            while True:
+                remaining = display_game_status(word, guessed_letters, unguessed_letters, attempts, number_of_attempts_val)
+                user_input = get_user_input(unguessed_letters, guessed_letters)
+
+                if game_logic(user_input, word):
+                    sleep(0.5)
+                    print('\nNice one! You found a letter.\n')
+                    sleep(1.5)
+                else:
+                    sleep(0.5)
+                    print('\nOops! That letter is not there.\n')
+                    number_of_attempts_val += 1
+                    sleep(1.5)
+
+                if win_check(guessed_letters, word):
+                    sleep(0.5)
+                    print('\n\n\nCongratulations! You are the winner!\n\n\n')
+                    sleep(1)
+                    remaining
+                    sleep(2)
+                    break
+
+                if remaining < 1:
+                    sleep(0.5)
+                    print('\n\nGame Over! You ran out of guesses.\n\n')
+                    sleep(0.5)
+                    break
+        # break
+            
+
+main()

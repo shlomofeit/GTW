@@ -1,6 +1,7 @@
 from random import choice
 from time import sleep
-import re
+
+ATTEMPTS = 15
 
 words = [
     "PYTHON", "PROGRAMMING", "DEVELOPER", "ALGORITHM", 
@@ -17,21 +18,19 @@ def random_word(words: list):
     return list(choice(words).upper())
 
 
-def display_game_status(secret_word, guessed_letters, unguessed_letters, tries, attempts):
+def display_game_status(secret_word, guessed_letters, unguessed_letters, attempts):
 
     word_for_display = ' '.join([letter if letter in guessed_letters else '_' for letter in secret_word])
 
-    remaining = tries - attempts
-
     print("\n" + '=' * 45)
-    print(f' STATUS: {remaining} Attempts left | Guessed: {', '.join(guessed_letters)}')
+    print(f' STATUS: {attempts} Attempts left | Guessed: {', '.join(guessed_letters)}')
     print('=' * 45)
-    print(f'\n{12 * ' '}>>  {word_for_display}  <<\n')
+    print(f'\n{'>>  ' + word_for_display + '  <<':^45}\n')
     print('=' * 45)
     print(f'Wrong letters that you tried: {' '.join(unguessed_letters)}')
     print('=' * 45, '\n\n\n')
     sleep(0.5)
-    return remaining
+    return attempts
 
 
 def input_validation(letter, unguessed_word, guessed_letters):
@@ -40,12 +39,8 @@ def input_validation(letter, unguessed_word, guessed_letters):
         print('The input must contain only one character.')
         return False
 
-    if not re.match(r'^[a-zA-Z]$', letter):
+    if not ('A' <= letter <= 'z'):
         print(f'{letter} is not an English letter.')
-        return False
-
-    if not letter.isalpha():
-        print('The input must contain letters only.')
         return False
     
     if letter in unguessed_word or letter in guessed_letters:
@@ -66,7 +61,7 @@ def get_user_input(unguessed_word, guessed_word):
     return user_input
 
 
-def game_logic(letter, word, unguessed_letters, guessed_letters):
+def check_letter_macth(letter, word, unguessed_letters, guessed_letters):
     """check if the letter is correct"""
     if letter not in word:
         unguessed_letters.append(letter)
@@ -128,24 +123,23 @@ def main():
             break
 
         elif user_choice == '1':
-            tries = 0
-            ATTEMPTS = 15
+            tries = ATTEMPTS
             guessed_letters = []
             unguessed_letters = []
             word = random_word(words)
 
             while True:
-                display_game_status(word, guessed_letters, unguessed_letters, ATTEMPTS, tries) # use or delete
+                display_game_status(word, guessed_letters, unguessed_letters, tries)
                 user_input = get_user_input(unguessed_letters, guessed_letters)
 
-                if game_logic(user_input, word, unguessed_letters, guessed_letters):
+                if check_letter_macth(user_input, word, unguessed_letters, guessed_letters):
                     sleep(0.5)
                     print('\nNice one! You found a letter.\n')
                     sleep(1.5)
                 else:
                     sleep(0.5)
                     print('\nOops! That letter is not there.\n')
-                    tries += 1
+                    tries -= 1
                     sleep(1.5)
 
                 if win_check(guessed_letters, word):
@@ -156,11 +150,12 @@ def main():
                     sleep(2)
                     break
 
-                if tries >= ATTEMPTS:
+                if not tries:
                     sleep(0.5)
                     print('\n\nGame Over! You ran out of guesses.\n\n')
                     sleep(0.5)
                     break
             
 
-main()
+if __name__ == "__main__":
+    main()

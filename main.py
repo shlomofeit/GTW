@@ -1,12 +1,15 @@
 from random import random, choice, choices
 
 
+guessed_letters = []
+unguessed_letters = []
+
 def random_word(words: list):
     """Choose a random word for the game"""
     if not words:
         return f'No words in the json file.'
     
-    return random.choice(words).upper()
+    return list(random.choice(words).upper())
 
 
 def display_game_status(secret_word, guessed_letters, unguessed_letters, number_of_attempts, attempts):
@@ -34,4 +37,14 @@ def input_validation(letter, unguessed_word, guessed_letters):
         print('The letter has been tried before.')
         return False
     
+    return True
+
+
+def game_logic(letter, word):
+    """check if the letter are correct"""
+    if letter not in word:
+        unguessed_letters.append(letter)
+        return False
+    
+    guessed_letters.append(letter)
     return True

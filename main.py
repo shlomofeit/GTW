@@ -9,11 +9,11 @@ def random_word(words: list):
     return random.choice(words).upper()
 
 
-def display_game_status(secret_word, guessed_letters, unguessed_letters, attempts):
+def display_game_status(secret_word, guessed_letters, unguessed_letters, number_of_attempts, attempts):
 
     word_for_display = ' '.join([letter if letter in guessed_letters else '_' for letter in secret_word])
 
-    remaining = 15 - attempts
+    remaining = number_of_attempts - attempts
 
     print("\n" + '=' * 45)
     print(f' STATUS: {remaining} Attempts left | Guessed: {', '.join(guessed_letters)}')

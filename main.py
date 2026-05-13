@@ -68,3 +68,29 @@ def win_check(guessed_letters, word):
         return True
     
     return False
+
+
+def print_menu():
+    print('\n' + '=' * 30)
+    print(f'{'MAIN MENU':^30}')
+    print('=' * 30)
+    print('1. Start new game')
+    print('2. View game history')
+    print('3. Exit')
+    print('=' * 30)
+
+    while True:
+        choice = input('Select an option (1-3):\n>>> ')
+        if choice in '123':
+            sleep(0.5)
+            break
+
+        else:
+            sleep(0.5)
+            print('\nChoose only 1-3.\n')
+            sleep(0.5)
+
+    return choice
+
+def main():
+    pass

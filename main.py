@@ -22,3 +22,16 @@ def display_game_status(secret_word, guessed_letters, unguessed_letters, attempt
     print('=' * 45)
     print(f'Wrong letters that you tried: {' '.join(unguessed_letters)}')
     print('=' * 45)
+
+
+def input_validation(letter, unguessed_word, guessed_letters):
+    """Validating the input if it one letter and not a letter that guessed already befor"""
+    if not len(letter) == 1:
+        print('The input must contain only one character.')
+        return False
+    
+    if letter in unguessed_word or letter in guessed_letters:
+        print('The letter has been tried before.')
+        return False
+    
+    return True

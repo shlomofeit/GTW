@@ -1,7 +1,7 @@
 from random import choice
 from time import sleep
 
-ATTEMPTS = 15
+ATTEMPTS = 8
 
 words = [
     "PYTHON", "PROGRAMMING", "DEVELOPER", "ALGORITHM", 
@@ -146,13 +146,13 @@ def main():
                     sleep(0.5)
                     print('\n\n\nCongratulations! You are the winner!\n\n\n')
                     sleep(1)
-                    display_game_status(word, guessed_letters, unguessed_letters, ATTEMPTS, tries)
+                    display_game_status(word, guessed_letters, unguessed_letters, tries)
                     sleep(2)
                     break
 
                 if not tries:
                     sleep(0.5)
-                    print('\n\nGame Over! You ran out of guesses.\n\n')
+                    print(f'\n\nGame Over! You ran out of guesses.\nThe word was: {"".join(word)}\n\n')
                     sleep(0.5)
                     break
             
